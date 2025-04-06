@@ -1,0 +1,18 @@
+# === PYTHON / BACKEND ===
+__pycache__/
+*.py[cod]
+venv/
+.env
+*.log
+
+# === NODE / FRONTEND ===
+node_modules/
+build/
+dist/
+*.env
+
+# === OS & EDITOR FILES ===
+.DS_Store
+.idea/
+.vscode/
+*.swp

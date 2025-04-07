@@ -34,20 +34,6 @@ except Exception as error:
     print("Connecting to database failed")
     print(f"The error was: {error}")
 
-
-my_memories = [
-    {
-        "title": "Post One",
-        "text": "Content of Post One",
-        "id": 1
-    },
-    {
-        "title": "Favorite Foods",
-        "text": "I like pizza",
-        "id": 2
-    }
-]
-
 class Memory(BaseModel):
     title: str
     text: str
@@ -55,7 +41,7 @@ class Memory(BaseModel):
     artist: str
 
 
-@app.get("/") #path operation decorator: goes to path '/' using the HTTP 'GET' method
+@app.get("/") 
 async def home():
     return {"message": "Welcome to the memory journal!"}
 

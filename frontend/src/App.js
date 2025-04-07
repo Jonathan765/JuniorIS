@@ -1,27 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import Home from './pages/Home.js';
+import MemoryListPage from './pages/MemoryListPage.js';
+import MemoryFormPage from './pages/MemoryFormPage.js';
 
-function App() {
-  const [memories, setMemories] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/memories")
-      .then((res) => res.json())
-      .then((data) => setMemories(data))
-      .catch((err) => console.error("Error fetching memories:", err));
-  }, []);
-
+const App = () => {
   return (
-    <div>
-      <h1>Music Memory Journal</h1>
-      <ul>
-        {memories.map((memory) => (
-          <li key={memory.id}>
-            <strong>{memory.title}</strong>: {memory.text}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Router>
+      <Routes>  
+        <Route path="/" element={<Home />} />  
+        <Route path="/view-memories" element={<MemoryListPage />} />
+        <Route path="/add-memory" element={<MemoryFormPage />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

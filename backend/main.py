@@ -5,8 +5,10 @@ from random import randrange
 import psycopg2 
 from psycopg2.extras import RealDictCursor
 from fastapi.middleware.cors import CORSMiddleware
+from routes import spotify
 
 app = FastAPI()
+app.include_router(spotify.router, prefix="/spotify")
 
 #configure CORS (Cross-Origin Resource Sharing) to handle React and FastAPI running on different local ports
 origins = [

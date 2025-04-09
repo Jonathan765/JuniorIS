@@ -11,7 +11,7 @@ const MemoryFormPage = () => {
     return (
         <div>
         <h1>Add a Memory</h1>
-        <MemoryForm />
+        <MemoryForm setMemories={() => {}}/>
         <button onClick={goToHome}>Back to Home</button>
         </div>
     );   

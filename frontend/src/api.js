@@ -1,30 +1,30 @@
 import axios from "axios";
 
-// Set the base URL for the API
+//set the base URL for the backend
 const api = axios.create({
   baseURL: "http://localhost:8000", 
 });
 export default api; 
 
-// Function to fetch all memories
+//retrieving memories from the database
 export const fetchMemories = () => {
   return api
     .get("/memories")
-    .then((response) => response.data) // Return the data directly
+    .then((response) => response.data) 
     .catch((error) => {
       console.error("Error fetching memories:", error);
-      throw error; // Re-throw error for further handling
+      throw error; 
     });
 };
 
-// Function to create a new memory
+//adding a memory to the database
 export const createMemory = (memory) => {
   return api
     .post("/memories", memory)
-    .then((response) => response.data) // Return the created memory data
+    .then((response) => response.data) 
     .catch((error) => {
       console.error("Error creating memory:", error);
-      throw error; // Re-throw error for further handling
+      throw error; 
     });
 };
 

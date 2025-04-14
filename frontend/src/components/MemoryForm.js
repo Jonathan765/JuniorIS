@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { createMemory } from "../api.js";  // Import createMemory function from api.js
-import "../styles/MemoryForm.css";  // Import the CSS for styling
+import React, { useState, useEffect } from "react";
+import { createMemory } from "../api.js";  
+import "../styles/MemoryForm.css";  
 
 const MemoryForm = ({ setMemories }) => {
   const [newMemory, setNewMemory] = useState({
@@ -9,61 +9,74 @@ const MemoryForm = ({ setMemories }) => {
     song: "",
     artist: "",
   });
-  const [searchQuery, setSearchQuery] = useState("");  // Search query state
-  const [searchResults, setSearchResults] = useState([]);  // Store search results
-  const [isLoading, setIsLoading] = useState(false);  // Loading state
-  const [songSelected, setSongSelected] = useState(false); // State to check if a song is selected
 
-  // Handle form input changes
+  const [searchQuery, setSearchQuery] = useState("");  
+  const [searchResults, setSearchResults] = useState([]);  
+  const [isLoading, setIsLoading] = useState(false);
+  const [songSelected, setSongSelected] = useState(false); 
+
+  
   const handleChange = (e) => {
     setNewMemory({
       ...newMemory,
-      [e.target.name]: e.target.value,  // Update the corresponding input field
+      [e.target.name]: e.target.value,  
     });
   };
 
-  // Handle search input changes
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);  // Update search query
-  };
-
-  // Handle song search
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!searchQuery) return;  // Don't search if the query is empty
-
-    setIsLoading(true);  // Set loading state to true
-
+  const fetchResults = async (query) => {
+    setIsLoading(true);
+    setSearchResults([]);
     try {
-      // Send GET request to the FastAPI backend to search for songs
-      const response = await fetch(`http://localhost:8000/spotify/search?query=${searchQuery}`);
-      const data = await response.json();  // Parse the JSON response
-
-      // Update search results
-      setSearchResults(data.tracks.items);  // Assuming data.tracks.items contains the songs
+      const response = await fetch(
+        `http://localhost:8000/spotify/search?query=${encodeURIComponent(query)}`
+      );
+      const data = await response.json();
+      setSearchResults(data.tracks.items);
     } catch (error) {
-      console.error("Error fetching search results:", error);  // Handle errors
+      console.error("Error fetching search results:", error);
     } finally {
-      setIsLoading(false);  // Reset loading state
+      setIsLoading(false);
     }
   };
 
-  // Handle memory submission
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      if (searchQuery) {
+        fetchResults(searchQuery);
+      } else {
+        setSearchResults([]);
+      }
+    }, 500); // setting the debounce time in milliseconds
+  
+    return () => clearTimeout(delayDebounce);
+  }, [searchQuery]);
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);  
+  };
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!searchQuery) return;
+    fetchResults(searchQuery); 
+  };
+
   const handleSubmit = (e) => {
-    e.preventDefault();  // Prevent the default form submission behavior
-    createMemory(newMemory)  // Assuming createMemory is already set up to send the post request
+    e.preventDefault();  
+    createMemory(newMemory)
       .then((createdMemory) => {
-        setMemories((prevMemories) => [...prevMemories, createdMemory]);  // Add the new memory to the state
+        setMemories((prevMemories) => [...prevMemories, createdMemory]);  
         setNewMemory({
           title: "",
           text: "",
           song: "",
           artist: "",
-        });  // Reset the form after submission
-        setSongSelected(false);  // Reset song selection state
+        });
+        setSearchQuery("");
+        setSongSelected(false);
       })
       .catch((error) => {
-        console.error("Error creating memory:", error);  // Handle errors
+        console.error("Error creating memory:", error);
       });
   };
 
@@ -83,10 +96,8 @@ const MemoryForm = ({ setMemories }) => {
         </button>
       </div>
 
-      {/* Show loading state while searching */}
       {isLoading && <p className="loading-text">Loading...</p>}
 
-      {/* Show search results */}
       {searchResults.length > 0 && !songSelected && (
         <ul className="search-results">
           {searchResults.map((track) => (
@@ -98,18 +109,24 @@ const MemoryForm = ({ setMemories }) => {
                   song: track.name,
                   artist: track.artists.map((artist) => artist.name).join(", "),
                 });
-                setSearchResults([]);  // Clear search results after selecting a song
-                setSongSelected(true);  // Mark that a song has been selected
+                setSearchResults([]);
+                setSongSelected(true);
               }}
               className="search-result-item"
             >
-              {track.name} - {track.artists.map((artist) => artist.name).join(", ")}
+              <img
+                src={track.album.images[2]?.url}
+                alt="Album Cover"
+                className="album-thumb"
+              />
+              <div className="track-info">
+                {track.name} - {track.artists.map((artist) => artist.name).join(", ")}
+              </div>
             </li>
           ))}
         </ul>
       )}
 
-      {/* Show the title and memory text inputs only after a song is selected */}
       {songSelected && (
         <div className="memory-inputs">
           <input
@@ -126,15 +143,14 @@ const MemoryForm = ({ setMemories }) => {
             value={newMemory.text}
             onChange={handleChange}
             className="textarea-field"
-          ></textarea>
-
+          />
           <input
             type="text"
             name="song"
             placeholder="Song"
             value={newMemory.song}
             onChange={handleChange}
-            readOnly  // Prevent editing the song directly
+            readOnly
             className="input-field"
           />
           <input
@@ -143,10 +159,9 @@ const MemoryForm = ({ setMemories }) => {
             placeholder="Artist"
             value={newMemory.artist}
             onChange={handleChange}
-            readOnly  // Prevent editing the artist directly
+            readOnly
             className="input-field"
           />
-
           <button type="submit" className="submit-button">
             Add Memory
           </button>

@@ -5,7 +5,7 @@ import MemoryList from '../components/MemoryList.js';
 
 const MemoryListPage = () => {
   const [memories, setMemories] = useState([]);
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     fetchMemories()
@@ -17,7 +17,6 @@ const MemoryListPage = () => {
       });
   }, []);
 
-  // Function to navigate back to home
   const goToHome = () => {
     navigate('/');
   };
@@ -26,7 +25,6 @@ const MemoryListPage = () => {
     <div>
       <h1>View Memories</h1>
       <MemoryList memories={memories} />
-      {/* Button to go back to Home */}
       <button onClick={goToHome}>Back to Home</button>
     </div>
   );

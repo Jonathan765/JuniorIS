@@ -1,15 +1,133 @@
-.memory-form {
-    display: flex;
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+ .memory-form {
+    /* display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 1rem;
+    padding: 0rem;
     max-width: 500px;
     margin: 0 auto;
-    background-color: #f8f9fa;
     border-radius: 8px;
+    padding-top: 2rem; */
+    
+    margin-top: 20px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2rem;
+  padding-left: 15rem;
+  padding-right: 15rem;
+  padding-bottom: 5rem;
+  border-radius: 4px;
+  width: 100%;
+  min-height: 450px;
+  max-width: 500px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+    
   }
 
-  .search-result-item {
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    padding: .75rem 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+  
+.header-title {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: #111827;
+    font-family: 'Raleway';
+
+}
+
+.back-button-container {
+  position: fixed;
+  top: 8px; 
+  left: 4px;
+  z-index: 3;
+}
+.search-wrapper {
+  background-color: #efedff; 
+  display: flex;
+  justify-content: center;
+  padding-top: 4rem;
+  padding-bottom: 0rem;
+}
+
+.search-form {
+  margin-top: 20px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8rem;
+  padding-left: 15rem;
+  padding-right: 15rem;
+  padding-bottom: 5rem;
+  border-radius: 4px;
+  width: 100%;
+  min-height: 350px;
+  max-width: 500px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.back-button {
+  align-self: flex-start;
+  margin: 60px 10px 10px;
+  text-decoration: none;
+  background-color: white;
+  color: #333;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Playfair Display', serif;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.back-to-search-button {
+  margin: 10px 10px 10px;
+  text-decoration: none;
+  background-color: white;
+  color: #333;
+  padding: 8px 4px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Playfair Display', serif;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.back-to-mem-button {
+  margin: 10px 10px 10px;
+  text-decoration: none;
+  background-color: white;
+  color: #333;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Playfair Display', serif;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+.search-instructions {
+  text-align: center;
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 20px;
+  font-family: 'Inter'; 
+}
+
+.search-result-item {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -24,27 +142,45 @@
   }
   
   .album-thumb {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
-    border-radius: 4px;
   }
   
   .track-info {
-    font-size: 0.9rem;
+    font-size: 1rem;
+    flex: 1;
   }
-  
-  
+
   .search-section {
+ 
+    width: 400px;
+    height: 50px;
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom,rgb(227, 213, 255),rgb(255, 231, 231));
+    border-radius: 30px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075);
+    font-family: 'Inter';
   }
   
   .search-input {
-    width: 70%;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+
+    width: 372px;
+    height: 40px;
+    border: none;
+    outline: none;
+    caret-color: black;
+    background-color: rgb(255, 255, 255);
+    border-radius: 30px;
+    padding-left: 15px;
+    letter-spacing: 0.8px;
+    color: rgb(19, 19, 19);
+    font-size: 14px;
+    font-family: 'Inter';
   }
   
   .search-button {
@@ -68,21 +204,30 @@
   .search-results {
     list-style: none;
     padding: 0;
-    margin: 0;
-  }
+    margin-top: 1rem;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
   
-  .search-result-item {
-    cursor: pointer;
-    padding: 0.5rem;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    margin-top: 0.5rem;
-    border-radius: 4px;
-  }
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 2px;
+  border-color: #ddd;
+  margin-bottom: .25rem;
+  cursor: pointer;
+}
   
-  .search-result-item:hover {
-    background-color: #f1f1f1;
-  }
+.search-result-item:hover {
+  background-color: #f1f1f1;
+}
   
   .memory-inputs {
     display: flex;
@@ -95,11 +240,29 @@
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 4px;
-    width: 100%;
+    width: 800px;
+    height: 250px;
+    resize: none;
+    font-family: 'Inter';
   }
-  
-  .textarea-field {
-    min-height: 100px;
+
+  .title-field {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 400px;
+    height: 50px;
+    resize: none;
+    font-family: 'Inter';
+  }
+  .tag-field {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 400px;
+    height: 50px;
+    resize: none;
+    font-family: 'Inter';
   }
   
   .submit-button {
@@ -109,10 +272,78 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    align-self: flex-start;
+    align-self: center;
+    width: 200px;
   }
   
   .submit-button:hover {
     background-color: #218838;
   }
+
+
+  
+  .back-button:hover {
+    background-color: #e6e6e6;
+  }
+  
+  .selected-track-display {
+    text-align: center;
+    margin-top: 2px;
+    margin-bottom: 10px;
+  }
+
+  .track-details {
+    text-align: center;
+    margin-top: 12px;
+  }
+  
+  .selected-album-image {
+    width: 180px;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
+    margin-bottom: 2px;
+  }
+  
+  .track-title {
+    font-size: 1.6rem;
+    margin: 2px;
+    font-family: 'Playfair Display', serif;
+    color: #333;
+  }
+  
+  .track-artist {
+    font-size: 1rem;
+    margin: 4px;
+    color: #666;
+    font-family: 'Playfair Display', serif;
+  }
+
+
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  
+  .tag {
+    background-color: #eee;
+    padding: 6px 10px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .remove-tag-btn {
+    background: black;
+    border: none;
+    margin-left: 6px;
+    color: red;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    padding-top: .15rem;
+  }
+  
   

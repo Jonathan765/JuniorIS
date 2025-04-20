@@ -1,0 +1,180 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    padding: .75rem 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+  
+.header-title {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: #111827;
+    font-family: 'Raleway';
+
+}
+
+.back-button-container {
+    position: fixed;
+    top: 8px; 
+    left: 4px;
+    z-index: 3;
+  }
+  
+.back-button {
+    align-self: flex-start;
+    margin: 60px 10px 10px;
+    text-decoration: none;
+    background-color: white;
+    color: #333;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Playfair Display', serif;
+    transition: background-color 0.2s ease;
+    text-align: center;
+  }
+  
+
+  .memory-grid {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+    align-items: center;
+  }
+  
+  .memory-card {
+    width: 240px;
+    height: 280px;
+    padding: .75rem;
+    perspective: 1000px; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    transition: transform 0.2s ease;
+  }
+  .memory-card:hover {
+    transform: scale(1.02);
+  }
+  
+  
+  .memory-card .card-inner {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+  }
+  
+  .memory-card .card-front,
+  .memory-card .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-front {
+    background: #fafafa;
+  }
+  
+  .card-back {
+    background: #fff;
+    transform: rotateY(180deg);
+    overflow-y: auto;
+  }
+  
+  .memory-card.active {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-45%, -50%);
+    z-index: 1000;
+    width: 800px;
+    height: 400px;
+    
+  }
+  
+  .memory-card.active .card-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .memory-card.active .card-front .album-cover {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .album-cover {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  
+  .memory-info h3 {
+    margin-top: 0.5rem;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+    
+
+  .tags {
+    margin-top: 1rem;
+  }
+  
+  .tags span {
+    margin-right: 10px;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .memory-card.active .card-back {
+    padding-top: 1rem;
+    padding: 2rem;
+    font-size: 1.2rem;
+  }
+/* 
+.memory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .memory-card {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: .75rem;
+    background-color: #fafafa;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .memory-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .album-cover {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+  
+  .memory-info {
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+   */

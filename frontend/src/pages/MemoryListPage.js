@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
 import { fetchMemories } from '../api.js';
 import MemoryList from '../components/MemoryList.js';
+import { Link } from "react-router-dom";
 
 const MemoryListPage = () => {
   const [memories, setMemories] = useState([]);
-  const navigate = useNavigate(); 
 
   useEffect(() => {
     fetchMemories()
       .then(response => {
+        //console.log("Fetched memories:", response);
         setMemories(response.data);
       })
       .catch(error => {
@@ -17,15 +17,18 @@ const MemoryListPage = () => {
       });
   }, []);
 
-  const goToHome = () => {
-    navigate('/');
-  };
 
   return (
     <div>
-      <h1>View Memories</h1>
+      <div className="header">
+        <h1 className="header-title">My Music Memory Journal</h1>
+      </div>
+
+      <div className="back-button-container">
+        <Link to="/" className="back-button">← Home</Link>
+      </div>
+
       <MemoryList memories={memories} />
-      <button onClick={goToHome}>Back to Home</button>
     </div>
   );
 };

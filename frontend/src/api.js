@@ -10,7 +10,7 @@ export default api;
 export const fetchMemories = () => {
   return api
     .get("/memories")
-    .then((response) => response.data) 
+    .then((response) => response) 
     .catch((error) => {
       console.error("Error fetching memories:", error);
       throw error; 

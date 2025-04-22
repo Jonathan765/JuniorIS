@@ -54,8 +54,6 @@ class Memory(BaseModel):
     album_image_url: Optional[str] = None
     tags: Optional[List[Tag]] = []
 
-
-
 def extract_keywords(text: str):
     keywords = kw_model.extract_keywords(text, keyphrase_ngram_range=(1, 2), stop_words='english', top_n=5)
     return [kw[0].title() for kw in keywords]

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createMemory } from "../api.js";  
 import "../styles/MemoryForm.css";  
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const MemoryForm = ({ setMemories }) => {
   const [newMemory, setNewMemory] = useState({
@@ -31,7 +32,7 @@ const MemoryForm = ({ setMemories }) => {
 
   const [dateParts, setDateParts] = useState({ day: "", month: "", year: "" });
 
-
+  const navigate = useNavigate();
 
   const generateTitles = async (memoryText) => {
     setLoadingTitles(true);
@@ -142,6 +143,7 @@ const MemoryForm = ({ setMemories }) => {
       .catch((error) => {
         console.error("Error creating memory:", error);
       });
+      navigate("/");
   };
 
   return (
@@ -556,8 +558,6 @@ const MemoryForm = ({ setMemories }) => {
 
               </div>
            
-
-            
             <button type="submit" className="submit-form-button">
               Add Memory
             </button>

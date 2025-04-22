@@ -1,49 +1,105 @@
-// import React, { useState, useEffect } from "react";
-// import { fetchMemories } from "../api.js";  // Import the fetchMemories function
+// import React, {useState} from "react";
+// import '../styles/MemoryList.css'; // optional: for styles
 
-// const MemoryList = () => {
-//   const [memories, setMemories] = useState([]);
-
-//   // Fetch memories when the component mounts
-//   useEffect(() => {
-//     fetchMemories()  // Fetch the memories from the API
-//       .then((data) => {
-//         setMemories(data);  // Set the fetched memories to state
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching memories:", error);  // Handle any errors
-//       });
-//   }, []);  // Empty dependency array ensures this runs only once on mount
+// const MemoryList = ({ memories }) => {
+//   // Sort memories by created date descending (most recent first)
+//   const sortedMemories = [...memories].sort((a, b) => new Date(b.date_added) - new Date(a.date_added));
+//   const [activeCardId, setActiveCardId] = useState(null);
 
 //   return (
 //     <div>
-//       <h2>Memory List</h2>
-//       <ul>
-//         {memories.map((memory) => (
-//           <li key={memory.id}>
-//             <strong>{memory.title}</strong>: {memory.text}
-//           </li>
+//       <div className="memory-grid">
+//         {sortedMemories.map((memory) => (
+//           <div
+//             className={`memory-card ${activeCardId === memory.id ? "active" : ""}`}
+//             key={memory.id}
+//             onClick={() =>
+//               setActiveCardId(activeCardId === memory.id ? null : memory.id)
+//             }
+//           >
+//             <div className="card-inner">
+//               <div className="card-front">
+//                 <img
+//                   src={memory.album_image_url}
+//                   alt={memory.title}
+//                   className="album-cover"
+//                 />
+//                 <div className="memory-info">
+//                   <h3>{memory.title}</h3>
+//                 </div>
+//               </div>
+//               <div className="card-back">
+//                 <h3>{memory.title}</h3>
+//                 <p>{memory.text}</p>
+//                 <div className="tags">
+//                   <span>{memory.song_title}</span>
+//                   <span>{memory.song_artist}</span>
+//                   {/* Add more tags as needed */}
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
 //         ))}
-//       </ul>
+//       </div>
 //     </div>
 //   );
 // };
 
 // export default MemoryList;
-import React, {useState} from "react";
-import '../styles/MemoryList.css'; // optional: for styles
-
-
+import React, { useState } from "react";
+import '../styles/MemoryList.css';
 
 const MemoryList = ({ memories }) => {
-  // Sort memories by created date descending (most recent first)
-  const sortedMemories = [...memories].sort((a, b) => new Date(b.date_added) - new Date(a.date_added));
   const [activeCardId, setActiveCardId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchMode, setSearchMode] = useState("songs"); // or "tags"
+
+  const sortedMemories = [...memories].sort(
+    (a, b) => new Date(b.date_added) - new Date(a.date_added)
+  );
+
+  const filteredMemories = sortedMemories.filter((memory) => {
+    const query = searchQuery.toLowerCase();
+
+    if (searchMode === "songs") {
+      return (
+        memory.song_title.toLowerCase().includes(query) ||
+        memory.song_artist.toLowerCase().includes(query)
+      );
+    } else if (searchMode === "tags") {
+      return memory.tags?.some(tag =>
+        tag.name.toLowerCase().includes(query)
+      );
+    }
+
+    return true;
+  });
 
   return (
     <div>
+      {/* Search Controls */}
+      <div className="search-bar-container">
+        <select
+          value={searchMode}
+          onChange={(e) => setSearchMode(e.target.value)}
+          className="search-dropdown"
+        >
+          <option value="songs">Songs</option>
+          <option value="tags">Tags</option>
+        </select>
+
+        <input
+          type="text"
+          placeholder={`Search by ${searchMode}`}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-text"
+        />
+      </div>
+
+      {/* Memory Grid */}
       <div className="memory-grid">
-        {sortedMemories.map((memory) => (
+        {filteredMemories.map((memory) => (
           <div
             className={`memory-card ${activeCardId === memory.id ? "active" : ""}`}
             key={memory.id}
@@ -68,7 +124,9 @@ const MemoryList = ({ memories }) => {
                 <div className="tags">
                   <span>{memory.song_title}</span>
                   <span>{memory.song_artist}</span>
-                  {/* Add more tags as needed */}
+                  {memory.tags?.map((tag, idx) => (
+                    <span key={idx} className="tag">{tag.name}</span>
+                  ))}
                 </div>
               </div>
             </div>
@@ -80,4 +138,3 @@ const MemoryList = ({ memories }) => {
 };
 
 export default MemoryList;
-

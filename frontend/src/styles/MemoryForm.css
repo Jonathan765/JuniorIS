@@ -60,10 +60,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 8rem;
+  padding-top: 4rem;
   padding-left: 15rem;
   padding-right: 15rem;
-  padding-bottom: 5rem;
+  padding-bottom: 8.5rem;
   border-radius: 4px;
   width: 100%;
   min-height: 350px;
@@ -152,6 +152,7 @@
   .track-info {
     font-size: 1rem;
     flex: 1;
+    
   }
 
   .search-section {
@@ -236,7 +237,7 @@
     flex-direction: column;
     gap: .5rem;
   }
-  
+/*   
   .input-field,
   .textarea-field {
     padding: 0.5rem;
@@ -247,7 +248,37 @@
     resize: none;
     font-family: 'Inter';
     font-size: 14px;
+  } */
+
+  .textarea-field {
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 800px;
+    height: 300px;
+    resize: none;
+    font-family: "Playfair Display";
+    font-size: 16px;
+    line-height: 1.75; 
+    background-color: #fdfaf6;
+    background-image: 
+      repeating-linear-gradient(
+        to bottom,
+        #fdfaf6,
+        #fdfaf6 27px,
+        #e8e8e8 28px,
+        #fdfaf6 28px
+      );
+    background-position-y: 0.8rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease-in-out;
   }
+  
+  .textarea-field:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(233, 224, 250, 0.2);
+  }
+  
 
   .title-field {
     padding: 0.5rem;
@@ -297,6 +328,7 @@
   .track-details {
     text-align: center;
     margin-top: 12px;
+    
   }
   
   .selected-album-image {
@@ -310,15 +342,15 @@
   .track-title {
     font-size: 1.6rem;
     margin: 2px;
-    font-family: 'Playfair Display', serif;
+    font-family: "Inter";
     color: #333;
   }
   
   .track-artist {
     font-size: 1rem;
-    margin: 4px;
+    margin-top: 8px;
     color: #666;
-    font-family: 'Playfair Display', serif;
+    font-family: "Inter";
   }
 
 
@@ -409,7 +441,7 @@
     margin: 0rem;
     margin-bottom: 0rem;
     border-radius: 0px 0px 5px 5px;
-    border: 1px solid #000000;
+    border: 1.5px solid #000000;
     border-top: none;
     margin-top: -2px;
   }
@@ -458,7 +490,7 @@
     overflow-y: auto;
     position: absolute;
     z-index: 1000;
-    width: 86.2%;
+    width: 192px;
   }
   
   .tag-suggestion-item {
@@ -477,7 +509,7 @@
   }
 
   .submit-form-button {
-    margin-top: 5rem;
+    margin-top: 3rem;
     padding: .75rem 2rem;
     background-color: transparent;
     color: #333333;

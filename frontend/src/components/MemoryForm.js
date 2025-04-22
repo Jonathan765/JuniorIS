@@ -244,7 +244,7 @@ const MemoryForm = ({ setMemories }) => {
               />
               <button
                 type="button"
-                className="submit-button"
+                className="submit-form-button"
                 onClick={async () => {
                   await generateTitles(newMemory.text);
                   setFormStep(2);
@@ -284,14 +284,19 @@ const MemoryForm = ({ setMemories }) => {
                 className="title-field"
               />
               {/* Show suggestions after AI fetch */}
-              {titleFocused && (
+              {titleFocused && (newMemory.title === "") && (
                 loadingTitles ? (
                   <p className="loading-text">Generating title suggestions...</p>
-                ) : suggestedTitles.length > 0 ? (
+                ) : Array.isArray(suggestedTitles) && suggestedTitles.length > 0 ? (
+                  
                   <div className="title-suggestions">
                     
                     <ul className="suggestion-list">
-                    <p className="title-suggestion-label">AI-generated title ideas:</p>
+                    <p className="title-suggestion-label">
+                    <span role="img" aria-label="sparkle" style={{ marginRight: "0.2rem" }}> 
+                      ✨
+                      </span>
+                      AI-generated title ideas:</p>
                       {suggestedTitles.map((title, index) => (
                         <li
                           key={index}
@@ -305,9 +310,7 @@ const MemoryForm = ({ setMemories }) => {
                       ))}
                     </ul>
                   </div>
-                ) : (
-                  <p>No title suggestions available</p>
-                )
+                ) : null
               )}
 
             {/* Tag Input */}
@@ -505,7 +508,9 @@ const MemoryForm = ({ setMemories }) => {
                 )}
                 
                 {tagSuggestions.length > 0 && selectedTagType !== "date" && (
+                  
                   <ul className="tag-suggestions">
+                    
                     {tagSuggestions.map((suggestion, index) => (
                       <li
                         key={index}

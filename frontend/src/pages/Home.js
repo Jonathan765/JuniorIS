@@ -46,16 +46,16 @@ const albumImages = [
         <div>
             <h2>Welcome to My Music Memory Journal</h2>
             <p>Every song tells a story. Capture the moments, feelings, and memories tied to your favorite tracks. 
-                Whether it’s a late-night drive, a heartbreak, 
+                Whether it's a late-night drive, a heartbreak, 
                 or pure joy — let your music journal become a time capsule of you.</p>
         </div>
         
-        <div style={{ marginTop: '2rem' }}>
+        <div style={{ marginTop: '0rem' }}>
             <Link to="/add-memory">
-            <button className="home-button">Add Memory</button>
+            <button className="submit-form-button">Add Memory</button>
             </Link>
             <Link to="/view-memories">
-            <button className="home-button">View Memories</button>
+            <button className="submit-form-button">View Memories</button>
             </Link>
         </div>
         </div>

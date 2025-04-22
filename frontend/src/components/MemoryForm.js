@@ -25,9 +25,12 @@ const MemoryForm = ({ setMemories }) => {
   const [tagSuggestions, setTagSuggestions] = useState([]);
   const [tagFieldFocused, setTagFieldFocused] = useState(false);
 
-
   const [suggestedTitles, setSuggestedTitles] = useState([]);
   const [loadingTitles, setLoadingTitles] = useState(false);
+  const [titleFocused, setTitleFocused] = useState(false);
+
+  const [dateParts, setDateParts] = useState({ day: "", month: "", year: "" });
+
 
 
   const generateTitles = async (memoryText) => {
@@ -87,15 +90,17 @@ const MemoryForm = ({ setMemories }) => {
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       const fetchTagSuggestions = async () => {
-        try {
-          const query = tagInput.trim();
-          const url = `http://localhost:8000/tags/search?query=${encodeURIComponent(query)}&type=${selectedTagType}`;
+        if (tagFieldFocused) {
+          try {
+            const query = tagInput.trim();
+            const url = `http://localhost:8000/tags/search?query=${encodeURIComponent(query)}&type=${selectedTagType}`;
 
-          const res = await fetch(url);
-          const data = await res.json();
-          setTagSuggestions(data);
-        } catch (err) {
-          console.error("Error fetching tag suggestions:", err);
+            const res = await fetch(url);
+            const data = await res.json();
+            setTagSuggestions(data);
+          } catch (err) {
+            console.error("Error fetching tag suggestions:", err);
+          }
         }
       };
   
@@ -249,7 +254,7 @@ const MemoryForm = ({ setMemories }) => {
               </button>
               <button
                 type="button"
-                className="back-to-search-button"
+                className="back-to-mem-button"
                 onClick={() => {
                   
                   setSongSelected(false);
@@ -267,22 +272,26 @@ const MemoryForm = ({ setMemories }) => {
           {/* Step 2: Show title input and submit button */}
           {formStep === 2 && (
             <>
+            <p className="suggestion-label">Give your memory a title:</p>
               <input
                 type="text"
                 name="title"
-                placeholder="Give your memory a title"
+                placeholder="Add a title"
                 value={newMemory.title}
                 onChange={handleChange}
+                onFocus={() => setTitleFocused(true)}
+                onBlur={() => setTimeout(() => setTitleFocused(false), 100)}
                 className="title-field"
               />
               {/* Show suggestions after AI fetch */}
-              {loadingTitles ? (
-                <p className="loading-text">Generating title suggestions...</p>
-              ) : (
-                suggestedTitles.length > 0 ? ( // Check if there are suggestions
+              {titleFocused && (
+                loadingTitles ? (
+                  <p className="loading-text">Generating title suggestions...</p>
+                ) : suggestedTitles.length > 0 ? (
                   <div className="title-suggestions">
-                    <p className="suggestion-label">Or choose a suggested title:</p>
+                    
                     <ul className="suggestion-list">
+                    <p className="title-suggestion-label">AI-generated title ideas:</p>
                       {suggestedTitles.map((title, index) => (
                         <li
                           key={index}
@@ -297,11 +306,12 @@ const MemoryForm = ({ setMemories }) => {
                     </ul>
                   </div>
                 ) : (
-                  <p>No title suggestions available</p> // Display message if no suggestions
+                  <p>No title suggestions available</p>
                 )
               )}
 
             {/* Tag Input */}
+            <p className="suggestion-tags-label">Add tags to your memory:</p>
             <div className="tags-input-wrapper">
               {/* Dropdown for selecting tag type */}
               <select
@@ -318,34 +328,183 @@ const MemoryForm = ({ setMemories }) => {
               </select>
 
               {/* Input for tag text */}
-              <input
-                type="text"
-                placeholder={`Add a ${selectedTagType} tag and press Enter`}
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
-                onFocus={() => setTagFieldFocused(true)}
-                onBlur={() => setTimeout(() => setTagSuggestions([]), 100)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && tagInput.trim()) {
-                    e.preventDefault();
-                    const tag = tagInput.trim();
+              <div className="tag-suggested-container">
+              {selectedTagType === "date" ? (
+                  <div className="tag-text-with-button-wrapper">
+                    <input
+                      type="text"
+                      placeholder="YYYY"
+                      value={dateParts.year}
+                      maxLength={4}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (/^\d{0,4}$/.test(val)) setDateParts({ ...dateParts, year: val });
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault(); 
+                          const { year, month, day } = dateParts;
+                          const tag = [year, month, day].filter(Boolean).join("-");
+                          if (
+                            tag &&
+                            !newMemory.tags.some((t) => t.name === tag && t.tag_type === "date")
+                          ) {
+                            setNewMemory((prev) => ({
+                              ...prev,
+                              tags: [...prev.tags, { name: tag, tag_type: "date" }],
+                            }));
+                            setDateParts({ year: "", month: "", day: "" });
+                          }
+                        }
+                      }}
+                      className="tag-field date-field"
+                    />
+                    
+                    <input
+                      type="text"
+                      placeholder="MM"
+                      value={dateParts.month}
+                      maxLength={2}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (/^\d{0,2}$/.test(val)) setDateParts({ ...dateParts, month: val });
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault(); 
+                          const { year, month, day } = dateParts;
+                          const tag = [year, month, day].filter(Boolean).join("-");
+                          if (
+                            tag &&
+                            !newMemory.tags.some((t) => t.name === tag && t.tag_type === "date")
+                          ) {
+                            setNewMemory((prev) => ({
+                              ...prev,
+                              tags: [...prev.tags, { name: tag, tag_type: "date" }],
+                            }));
+                            setDateParts({ year: "", month: "", day: "" });
+                          }
+                        }
+                      }}
+                      className="tag-field date-field"
+                    />
+                    
+                    <input
+                      type="text"
+                      placeholder="DD"
+                      value={dateParts.day}
+                      maxLength={2}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (/^\d{0,2}$/.test(val)) setDateParts({ ...dateParts, day: val });
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault(); 
+                          const { year, month, day } = dateParts;
+                          const tag = [year, month, day].filter(Boolean).join("-");
+                          if (
+                            tag &&
+                            !newMemory.tags.some((t) => t.name === tag && t.tag_type === "date")
+                          ) {
+                            setNewMemory((prev) => ({
+                              ...prev,
+                              tags: [...prev.tags, { name: tag, tag_type: "date" }],
+                            }));
+                            setDateParts({ year: "", month: "", day: "" });
+                          }
+                        }
+                      }}
+                      className="tag-field date-field"
+                    />
+                    
+                    <button
+                      type="button"
+                      className="add-tag-btn"
+                      onClick={() => {
+                        const { year, month, day } = dateParts;
+                        const tag = [year, month, day].filter(Boolean).join("-");
+                        if (
+                          tag &&
+                          !newMemory.tags.some((t) => t.name === tag && t.tag_type === "date")
+                        ) {
+                          setNewMemory((prev) => ({
+                            ...prev,
+                            tags: [...prev.tags, { name: tag, tag_type: "date" }],
+                          }));
+                          setDateParts({ year: "", month: "", day: "" });
+                        }
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
+                ) : (
+                  <div className="tag-text-with-button-wrapper">
+                  <input
+                    type="text"
+                    placeholder={`Add a tag`}
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onFocus={() => setTagFieldFocused(true)}
+                    onBlur={() => {
+                      setTimeout(() => setTagSuggestions([]), 100)
+                      setTimeout(() => setTagFieldFocused(false), 100)
+                    
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && tagInput.trim()) {
+                        e.preventDefault();
+                        const tag = tagInput.trim();
+
+                        if (
+                          !newMemory.tags.some(
+                            (t) => t.name === tag && t.tag_type === selectedTagType
+                          )
+                        ) {
+                          setNewMemory((prev) => ({
+                            ...prev,
+                            tags: [...prev.tags, { name: tag, tag_type: selectedTagType }],
+                          }));
+                        }
+
+                        setTagInput("");
+                        setTagSuggestions([]);
+                      }
+                    }}
+                    className="tag-field"
+                  />
+                  <button
+                      type="button"
+                      className="add-tag-btn"
+                      onClick={() => {
+
+                        const tag = tagInput.trim();
+                        if (tag !== "") {
+
+                          if (
+                            !newMemory.tags.some(
+                              (t) => t.name === tag && t.tag_type === selectedTagType
+                            )
+                          ) {
+                            setNewMemory((prev) => ({
+                              ...prev,
+                              tags: [...prev.tags, { name: tag, tag_type: selectedTagType }],
+                            }));
+                          }
+
+                          setTagInput("");
+                          setTagSuggestions([]);
+                        }
+                      }}
+                    >
+                      +
+                    </button>
+                    </div>
+                  
+                )}
                 
-                    if (!newMemory.tags.some(t => t.name === tag && t.tag_type === selectedTagType)) {
-                      setNewMemory(prev => ({
-                        ...prev,
-                        tags: [...prev.tags, { name: tag, tag_type: selectedTagType }]
-                      }));
-                    }
-                
-                    setTagInput("");
-                    setTagSuggestions([]);
-                  }
-                }}
-                
-              className="tag-field"
-              />
-                
-                {tagSuggestions.length > 0 && (
+                {tagSuggestions.length > 0 && selectedTagType !== "date" && (
                   <ul className="tag-suggestions">
                     {tagSuggestions.map((suggestion, index) => (
                       <li
@@ -362,14 +521,14 @@ const MemoryForm = ({ setMemories }) => {
                         }}
                         className="tag-suggestion-item"
                       >
-                        {suggestion.name} ({suggestion.tag_type})
+                        {suggestion.name} 
                       </li>
                     ))}
                   </ul>
                 )}
-                
+              </div>
+            </div> 
                
-
               {/* Render added tags */}
               <div className="tags-list">
               {newMemory.tags.map(({ name, tag_type }, index) => (
@@ -385,20 +544,19 @@ const MemoryForm = ({ setMemories }) => {
                       }))
                     }
                   >
+                    ×
                   </button>
                 </span>
               ))}
 
               </div>
-            </div>
+           
 
             
-            <button type="submit" className="submit-button">
+            <button type="submit" className="submit-form-button">
               Add Memory
             </button>
-            <button
-              type="button"
-              className="back-to-mem-button"
+            <button type="button" className="back-to-mem-button"
               onClick={() => {
                 setFormStep(1)}}
             >

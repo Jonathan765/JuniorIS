@@ -18,11 +18,17 @@ This project is a simple web application that lets users write journal entries a
 
 ### How to Run
 
-1. **Set up the database (PostgreSQL):**
-   - The database and its three tables should be created manually using pgAdmin4 (or another SQL GUI).
-   - The project assumes the existence of the necessary tables. SQL scripts for table creation are not included in the code.
+1. **Clone the Repository**
 
-2. **Install dependencies:**
+   ```bash
+   git clone https://github.com/Jonathan765/JuniorIS.git
+   cd JuniorIS
+
+2. **Set up the database (PostgreSQL):**
+   - The database and its three tables should be created manually using pgAdmin4 (or another SQL GUI).
+   - The project assumes the existence of the necessary tables. SQL scripts for table creation are not included in the code so necessary changes are needed in JuniorIS/backend/main.py to connect to the correct database.
+
+3. **Install dependencies:**
    Inside your project folder, create a virtual environment and install the required packages:
 
    ```bash
@@ -30,16 +36,16 @@ This project is a simple web application that lets users write journal entries a
    source venv/bin/activate
    pip install -r requirements.txt
 
-3. **Spotify API Token**
+4. **Spotify API Token**
     - The website uses the Spotify API to fetch metadata about songs.
     - You will need to manually add a valid Spotify API token. The token is expected to be stored in an environment variable or passed directly in the code.
 
-4. **Run the Backend**
+5. **Run the Backend**
 
     ```bash
     uvicorn main:app --reload
 
-5. **Run the Frontend**
+6. **Run the Frontend**
 
     ```bash
     npm start

@@ -17,7 +17,7 @@ app.include_router(spotify.router, prefix="/spotify")
 
 # instantiate the BERT Information Extraction model
 kw_model = KeyBERT()
-nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load("en_core_web_sm") #loads the spaCy natural language processing library
 
 # save the frontend port location for easy reference
 origins = ["http://localhost:3000"]
@@ -62,6 +62,7 @@ class Memory(BaseModel): # the main memory object to store in the database
     album_image_url: Optional[str] = None
     tags: Optional[List[Tag]] = []
 
+# checks whether a candidate title contains one 'good' word in it to ensure that suggested titles make linguistice sense
 def is_good_phrase(phrase):
     doc = nlp(phrase)
     return any(token.pos_ in {"NOUN", "PROPN", "ADJ"} for token in doc)

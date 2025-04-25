@@ -38,7 +38,7 @@ This project is a simple web application that lets users write journal entries a
 
 4. **Spotify API Token**
     - The website uses the Spotify API to fetch metadata about songs.
-    - You will need to manually add a valid Spotify API token. The token is expected to be stored in an environment variable or passed directly in the code.
+    - You will need to manually add a valid Spotify API token inside JuniorIS/backend/spotify.py. The token is expected to be stored in an environment variable or passed directly in the code.
 
 5. **Run the Backend**
 

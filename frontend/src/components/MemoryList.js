@@ -1,63 +1,19 @@
-// import React, {useState} from "react";
-// import '../styles/MemoryList.css'; // optional: for styles
-
-// const MemoryList = ({ memories }) => {
-//   // Sort memories by created date descending (most recent first)
-//   const sortedMemories = [...memories].sort((a, b) => new Date(b.date_added) - new Date(a.date_added));
-//   const [activeCardId, setActiveCardId] = useState(null);
-
-//   return (
-//     <div>
-//       <div className="memory-grid">
-//         {sortedMemories.map((memory) => (
-//           <div
-//             className={`memory-card ${activeCardId === memory.id ? "active" : ""}`}
-//             key={memory.id}
-//             onClick={() =>
-//               setActiveCardId(activeCardId === memory.id ? null : memory.id)
-//             }
-//           >
-//             <div className="card-inner">
-//               <div className="card-front">
-//                 <img
-//                   src={memory.album_image_url}
-//                   alt={memory.title}
-//                   className="album-cover"
-//                 />
-//                 <div className="memory-info">
-//                   <h3>{memory.title}</h3>
-//                 </div>
-//               </div>
-//               <div className="card-back">
-//                 <h3>{memory.title}</h3>
-//                 <p>{memory.text}</p>
-//                 <div className="tags">
-//                   <span>{memory.song_title}</span>
-//                   <span>{memory.song_artist}</span>
-//                   {/* Add more tags as needed */}
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default MemoryList;
 import React, { useState } from "react";
 import '../styles/MemoryList.css';
 
-const MemoryList = ({ memories }) => {
-  const [activeCardId, setActiveCardId] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchMode, setSearchMode] = useState("songs"); // or "tags"
+// this file determines what the memory view looks like
 
+const MemoryList = ({ memories }) => {
+  const [activeCardId, setActiveCardId] = useState(null); // the memory card the user has clicked
+  const [searchQuery, setSearchQuery] = useState(""); // what the user is searching
+  const [searchMode, setSearchMode] = useState("songs");  // where the user is searching (songs, tags)
+
+  // sorting the fetched memories passed as a prop in date_added order
   const sortedMemories = [...memories].sort(
     (a, b) => new Date(b.date_added) - new Date(a.date_added)
   );
 
+  // returns what songs match the searched query
   const filteredMemories = sortedMemories.filter((memory) => {
     const query = searchQuery.toLowerCase();
 
@@ -77,8 +33,10 @@ const MemoryList = ({ memories }) => {
 
   return (
     <div>
-      {/* Search Controls */}
+      {/* search section*/}
       <div className="search-bar-container">
+
+        {/* dropdown for selecting what option to search in*/}
         <select
           value={searchMode}
           onChange={(e) => setSearchMode(e.target.value)}
@@ -88,6 +46,7 @@ const MemoryList = ({ memories }) => {
           <option value="tags">Tags</option>
         </select>
 
+        {/* textbox for the user to write their query in*/}
         <input
           type="text"
           placeholder={`Search by ${searchMode}`}
@@ -97,7 +56,7 @@ const MemoryList = ({ memories }) => {
         />
       </div>
 
-      {/* Memory Grid */}
+      {/* the memory grid that displays the memories matching the query (or all if no query input) */}
       <div className="memory-grid">
         {filteredMemories.map((memory) => (
           <div
@@ -114,22 +73,23 @@ const MemoryList = ({ memories }) => {
                   alt={memory.title}
                   className="album-cover"
                 />
-                <div className="memory-info">
-                  <h3>{memory.title}</h3>
-                </div>
-              </div>
-              <div className="card-back">
+              <div className="memory-info">
                 <h3>{memory.title}</h3>
-                <p>{memory.text}</p>
-                <div className="tags">
-                  <span>{memory.song_title}</span>
-                  <span>{memory.song_artist}</span>
-                  {memory.tags?.map((tag, idx) => (
-                    <span key={idx} className="tag">{tag.name}</span>
-                  ))}
-                </div>
               </div>
             </div>
+
+            <div className="card-back">
+              <h3>{memory.title}</h3>
+              <p>{memory.text}</p>
+              <div className="tags">
+                <span>{memory.song_title}</span>
+                <span>{memory.song_artist}</span>
+                {memory.tags?.map((tag, idx) => (
+                  <span key={idx} className="tag">{tag.name}</span>
+                ))}
+              </div>
+            </div>
+          </div>
           </div>
         ))}
       </div>

@@ -3,20 +3,21 @@ import { fetchMemories } from '../api.js';
 import MemoryList from '../components/MemoryList.js';
 import { Link } from "react-router-dom";
 
+// this file loads the MemoryList component onto the page for viewing memories
+
 const MemoryListPage = () => {
   const [memories, setMemories] = useState([]);
 
+  // fetches all of the memories before the MemoryList component loads to pass it as a prop
   useEffect(() => {
     fetchMemories()
       .then(response => {
-        //console.log("Fetched memories:", response);
         setMemories(response.data);
       })
       .catch(error => {
         console.error("Error fetching memories:", error);
       });
   }, []);
-
 
   return (
     <div>

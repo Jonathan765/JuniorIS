@@ -4,8 +4,11 @@ import "../styles/MemoryForm.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-const MemoryForm = ({ setMemories }) => {
-  const [newMemory, setNewMemory] = useState({
+// this file determines the layout of the adding a memory component
+
+const MemoryForm = ({ setMemories }) => { 
+
+  const [newMemory, setNewMemory] = useState({ // the new memory to be added
     title: "",
     text: "",
     song: "",
@@ -14,7 +17,7 @@ const MemoryForm = ({ setMemories }) => {
     tags: [],
   });
 
-  const [searchQuery, setSearchQuery] = useState("");  
+  const [searchQuery, setSearchQuery] = useState(""); 
   const [searchResults, setSearchResults] = useState([]);  
   const [isLoading, setIsLoading] = useState(false);
   const [songSelected, setSongSelected] = useState(false); 
@@ -34,6 +37,7 @@ const MemoryForm = ({ setMemories }) => {
 
   const navigate = useNavigate();
 
+  // given the memory text, sets the suggested titles to the fetched results through the backend BERT model
   const generateTitles = async (memoryText) => {
     setLoadingTitles(true);
     try {
@@ -43,7 +47,6 @@ const MemoryForm = ({ setMemories }) => {
         body: JSON.stringify({ text: memoryText })
       });
       const data = await res.json();
-      console.log("API response:", JSON.stringify(data));
       setSuggestedTitles(data.titles);
     } catch (err) {
       console.error("Error generating titles:", err);
@@ -52,7 +55,7 @@ const MemoryForm = ({ setMemories }) => {
     }
   };
   
-  
+  // updates the memory with changes to the form
   const handleChange = (e) => {
     setNewMemory({
       ...newMemory,
@@ -60,6 +63,7 @@ const MemoryForm = ({ setMemories }) => {
     });
   };
 
+  // sets the search results to the fetched spotify data
   const fetchResults = async (query) => {
     setIsLoading(true);
     setSearchResults([]);
@@ -76,6 +80,7 @@ const MemoryForm = ({ setMemories }) => {
     }
   };
 
+  // create a debounce for fetching spotify results while the user it typing
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       if (searchQuery) {
@@ -83,11 +88,12 @@ const MemoryForm = ({ setMemories }) => {
       } else {
         setSearchResults([]);
       }
-    }, 500); // setting the debounce time in milliseconds
+    }, 500); 
   
     return () => clearTimeout(delayDebounce);
   }, [searchQuery]);
 
+  // create a debounce for fetching the tags from the database while the user is typing
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       const fetchTagSuggestions = async () => {
@@ -95,7 +101,6 @@ const MemoryForm = ({ setMemories }) => {
           try {
             const query = tagInput.trim();
             const url = `http://localhost:8000/tags/search?query=${encodeURIComponent(query)}&type=${selectedTagType}`;
-
             const res = await fetch(url);
             const data = await res.json();
             setTagSuggestions(data);
@@ -113,7 +118,6 @@ const MemoryForm = ({ setMemories }) => {
     return () => clearTimeout(delayDebounce);
   }, [tagInput, selectedTagType, tagFieldFocused]);
   
-
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);  
   };
@@ -124,6 +128,7 @@ const MemoryForm = ({ setMemories }) => {
     fetchResults(searchQuery); 
   };
 
+  // handles creating a memory when the user submits the form
   const handleSubmit = (e) => {
     e.preventDefault();  
     createMemory(newMemory)
@@ -148,7 +153,7 @@ const MemoryForm = ({ setMemories }) => {
 
   return (
     <>
-      
+    {/* header of the page */}  
       <div className="header">
         <h1 className="header-title">My Music Memory Journal</h1>
       </div>
@@ -157,12 +162,14 @@ const MemoryForm = ({ setMemories }) => {
       <div className="back-button-container">
         <Link to="/" className="back-button">← Home</Link>
       </div>
-      {/* Song Search Form */}
+
+      {/* song search form */}
       {!songSelected && (
         <form className="search-form" onSubmit={handleSearch}>
         <p className="search-instructions">
           Type the name of a song and pick one from the list to start your memory.
         </p>
+          {/* song search bar */}
           <div className="search-section">
             <input
               type="text"
@@ -175,10 +182,10 @@ const MemoryForm = ({ setMemories }) => {
           
           {isLoading && <p className="loading-text">Loading...</p>}
 
+          {/* displaying the spotify results*/}
           {searchResults.length > 0 && !songSelected && (
             <ul className="search-results">
               {searchResults.map((track) => (
-                
                 <li
                   key={track.id}
                   onClick={() => {
@@ -213,12 +220,11 @@ const MemoryForm = ({ setMemories }) => {
         </form>
       )}
       
-
-      {/* Memory Form */}
+      {/* memory form */}
       {songSelected && ( 
-        
       <form onSubmit={handleSubmit} className="memory-form">
-      
+
+        {/* display the selected song info */}
         {selectedTrack && formStep === 1 && (
           <div className="selected-track-display">
             <img
@@ -234,7 +240,7 @@ const MemoryForm = ({ setMemories }) => {
         )}
         
         <div className="memory-inputs">
-          {/* Step 1: Show memory text area and Continue button */}
+          {/* step 1 of the memory form: the actual text input */}
           {formStep === 1 && (
             <>
               <textarea
@@ -271,9 +277,10 @@ const MemoryForm = ({ setMemories }) => {
             </>
           )}
 
-          {/* Step 2: Show title input and submit button */}
+          {/* step 2 of the memory form: title and tags */}
           {formStep === 2 && (
             <>
+            {/* title input section */}
             <p className="suggestion-label">Give your memory a title:</p>
               <input
                 type="text"
@@ -285,14 +292,13 @@ const MemoryForm = ({ setMemories }) => {
                 onBlur={() => setTimeout(() => setTitleFocused(false), 100)}
                 className="title-field"
               />
-              {/* Show suggestions after AI fetch */}
+              {/* display suggested titles fetched from the BERT backend model */}
               {titleFocused && (newMemory.title === "") && (
                 loadingTitles ? (
                   <p className="loading-text">Generating title suggestions...</p>
                 ) : Array.isArray(suggestedTitles) && suggestedTitles.length > 0 ? (
                   
                   <div className="title-suggestions">
-                    
                     <ul className="suggestion-list">
                     <p className="title-suggestion-label">
                     <span role="img" aria-label="sparkle" style={{ marginRight: "0.2rem" }}> 
@@ -315,10 +321,10 @@ const MemoryForm = ({ setMemories }) => {
                 ) : null
               )}
 
-            {/* Tag Input */}
+            {/* tag input section */}
             <p className="suggestion-tags-label">Add tags to your memory:</p>
             <div className="tags-input-wrapper">
-              {/* Dropdown for selecting tag type */}
+              {/* dropdown for selecting tag type */}
               <select
                 value={selectedTagType}
                 onChange={(e) => {
@@ -332,10 +338,14 @@ const MemoryForm = ({ setMemories }) => {
                 <option value="custom">Custom</option>
               </select>
 
-              {/* Input for tag text */}
+              {/* text input for tag name */}
               <div className="tag-suggested-container">
+
+              {/* change the input display when entering a date */}
               {selectedTagType === "date" ? (
                   <div className="tag-text-with-button-wrapper">
+
+                    {/* entering the year */}
                     <input
                       type="text"
                       placeholder="YYYY"
@@ -365,6 +375,7 @@ const MemoryForm = ({ setMemories }) => {
                       className="tag-field date-field"
                     />
                     
+                    {/* entering the month */}
                     <input
                       type="text"
                       placeholder="MM"
@@ -394,6 +405,7 @@ const MemoryForm = ({ setMemories }) => {
                       className="tag-field date-field"
                     />
                     
+                    {/* entering the day */}
                     <input
                       type="text"
                       placeholder="DD"
@@ -423,6 +435,7 @@ const MemoryForm = ({ setMemories }) => {
                       className="tag-field date-field"
                     />
                     
+                    {/* button for adding a date tag */}
                     <button
                       type="button"
                       className="add-tag-btn"
@@ -446,6 +459,7 @@ const MemoryForm = ({ setMemories }) => {
                   </div>
                 ) : (
                   <div className="tag-text-with-button-wrapper">
+                  {/* tag text input when entering an emotion or custom */}
                   <input
                     type="text"
                     placeholder={`Add a tag`}
@@ -479,6 +493,8 @@ const MemoryForm = ({ setMemories }) => {
                     }}
                     className="tag-field"
                   />
+
+                  {/* adding a tag button for emotion or custom tag */}
                   <button
                       type="button"
                       className="add-tag-btn"
@@ -505,14 +521,13 @@ const MemoryForm = ({ setMemories }) => {
                     >
                       +
                     </button>
-                    </div>
-                  
+                    </div>  
                 )}
                 
+                {/* displaying the fetched tags from teh databse that match the user input */}
                 {tagSuggestions.length > 0 && selectedTagType !== "date" && (
                   
                   <ul className="tag-suggestions">
-                    
                     {tagSuggestions.map((suggestion, index) => (
                       <li
                         key={index}
@@ -536,11 +551,12 @@ const MemoryForm = ({ setMemories }) => {
               </div>
             </div> 
                
-              {/* Render added tags */}
+              {/* display the added tags */}
               <div className="tags-list">
               {newMemory.tags.map(({ name, tag_type }, index) => (
                 <span key={index} className={`tag tag-${tag_type}`}>
                   {name}
+                  {/* button to remove a tag */}
                   <button
                     type="button"
                     className="remove-tag-btn"
@@ -555,9 +571,9 @@ const MemoryForm = ({ setMemories }) => {
                   </button>
                 </span>
               ))}
-
               </div>
            
+            {/* buttons for submitting the form and going back to the memory text */}
             <button type="submit" className="submit-form-button">
               Add Memory
             </button>
@@ -567,7 +583,6 @@ const MemoryForm = ({ setMemories }) => {
             >
               ← Back to Memory
             </button>
-  
             </>
           )}
         </div>
@@ -579,4 +594,3 @@ const MemoryForm = ({ setMemories }) => {
 };
 
 export default MemoryForm;
-

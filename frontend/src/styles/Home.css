@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap'); /* loads a font from google */
 
-
+/* this file details the css styling of the home page*/
 
 .home-container {
     position: relative;
@@ -52,12 +52,12 @@
 }
 
 .home-button {
-    background-color: #3c88b7; /* soft indigo */
+    background-color: #3c88b7; 
     color: white;
     padding: 0.8rem 1.5rem;
     margin: 0.5rem;
     border: none;
-    border-radius: 999px; /* fully rounded */
+    border-radius: 999px;
     font-size: 1.1rem;
     font-weight: 500;
     cursor: pointer;
@@ -102,11 +102,11 @@
     font-family: "Inter", sans-serif;
     font-size: 14px;
     cursor: pointer;
-    background: linear-gradient(to bottom, rgb(227, 213, 255), rgb(255, 231, 231)); /* Soft gradient background */
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075); /* Soft shadow for depth */
+    background: linear-gradient(to bottom, rgb(227, 213, 255), rgb(255, 231, 231)); 
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075); 
   }
   
   .submit-form-button:hover {
-    background-color: #f0f8f0; /* Light background on hover for soft effect */
+    background-color: #f0f8f0; 
   }
   

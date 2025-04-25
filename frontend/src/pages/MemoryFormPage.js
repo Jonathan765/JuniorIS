@@ -1,9 +1,8 @@
 import React from 'react';
 import MemoryForm from '../components/MemoryForm.js';
-//import { useNavigate } from 'react-router-dom'; 
 
+// this file loads the MemoryForm component onto the page or adding a memory
 const MemoryFormPage = () => {
-    
     return (
         <div>
         <MemoryForm setMemories={() => {}}/>

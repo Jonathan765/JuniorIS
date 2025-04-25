@@ -1,5 +1,8 @@
+/* load fonts from google */
 @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+/* this file details the css styling of the MemoryFrom component*/
 
  .memory-form {
    
@@ -237,18 +240,6 @@
     flex-direction: column;
     gap: .5rem;
   }
-/*   
-  .input-field,
-  .textarea-field {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    width: 800px;
-    height: 250px;
-    resize: none;
-    font-family: 'Inter';
-    font-size: 14px;
-  } */
 
   .textarea-field {
     padding: 1rem;
@@ -520,12 +511,12 @@
     cursor: pointer;
     align-self: center;
     width: 200px;
-    background: linear-gradient(to bottom, rgb(227, 213, 255), rgb(255, 231, 231)); /* Soft gradient background */
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075); /* Soft shadow for depth */
+    background: linear-gradient(to bottom, rgb(227, 213, 255), rgb(255, 231, 231)); 
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075); 
   }
   
   .submit-form-button:hover {
-    background-color: #f0f8f0; /* Light background on hover for soft effect */
+    background-color: #f0f8f0; 
   }
 
   .date-input-group {

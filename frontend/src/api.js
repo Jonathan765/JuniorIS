@@ -1,12 +1,12 @@
-import axios from "axios";
+import axios from "axios"; // library to handle backend calls
 
-//set the base URL for the backend
+// set the base URL for the FastAPI backend for easy future reference
 const api = axios.create({
   baseURL: "http://localhost:8000", 
 });
 export default api; 
 
-//retrieving memories from the database
+// retrieving all memories from the backend
 export const fetchMemories = () => {
   return api
     .get("/memories")
@@ -17,7 +17,7 @@ export const fetchMemories = () => {
     });
 };
 
-//adding a memory to the database
+// adding a memory to the database through the backend
 export const createMemory = (memory) => {
   return api
     .post("/memories", memory)

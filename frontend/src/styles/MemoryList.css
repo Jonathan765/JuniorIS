@@ -1,3 +1,6 @@
+
+/* this file details the css styling of the MemoryList component*/
+
 .header {
     position: fixed;
     top: 0;
@@ -158,7 +161,7 @@
   .search-text {
     padding: .75rem;
     font-size: 1rem;
-    border: 1px solid #ccc; /* visible light gray border */
+    border: 1px solid #ccc; 
     border-radius: 10px;
     background-color: white;
     color: black;

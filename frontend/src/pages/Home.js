@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Home.css'; 
 
+// this file defines the layout and functionality of the main home page
+
+// define the album file names for the background of the home page
 const albumImages = [
     "Alvvays_AlbumCover.png",
     "AmericanIdiot_AlbumCover.jpg",
@@ -26,7 +29,7 @@ const albumImages = [
   const Home = () => {
     return (
       <div className="home-container">
-        
+        {/*Mapping the background album grid*/}
         <div className="album-background">
         {albumImages.map((img, index) => (
           <img
@@ -35,9 +38,9 @@ const albumImages = [
             alt={`Album ${index + 1}`}
           />
         ))}
-      </div>
+        </div>
   
-        {/* Header Bar */}
+        {/*Defining the main text and buttin layout of the home page*/}
         <div className="home-header">
           <h1 className="home-header-title">My Music Memory Journal</h1>
         </div>

@@ -4,6 +4,7 @@ import Home from './pages/Home.js';
 import MemoryListPage from './pages/MemoryListPage.js';
 import MemoryFormPage from './pages/MemoryFormPage.js';
 
+// the main app that determines what elements to call for each page of the website
 const App = () => {
   return (
     <Router>
